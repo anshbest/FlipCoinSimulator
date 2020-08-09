@@ -1,59 +1,56 @@
-#!/bin/bash
+#!/bin/bash -x
 
-Heads=0
-Tails=0
-Head=0
-Tail=0
-
-function tietosses () {
-IsChoice=$((RANDOM%2))
-if [ $IsChoice -eq 0 ]
+numberOfH=0
+numberOfT=0
+function isChoice(){
+isChoice=$((RANDOM%2))
+if [ $isChoice -eq 0 ]
 then
-        ((Heads++))
+	((numberOfH++))
 else
-        ((Tails++))
-  fi
-  }
-
-
-function freshgame () {
-IsChoice=$((RANDOM%2))
-if [ $IsChoice -eq 0 ]
+	((numberOfT++))
+fi
+}
+function freshgame(){
+for (( i=0 ;i<=40 ; i++ ))
+do
+	isChoice
+	if [ $(($numberOfH-$numberOfT)) -ge 2 ]
+	then
+		echo "H win"
+		break
+	elif [ $(($numberOfT-$numberOfH)) -ge 2 ]
+	then
+		echo "T win"
+		break
+	fi
+done
+}
+for (( j=0 ;j<=40 ; j++ ))
+do
+	isChoice
+	if [ $numberOfH -eq 21 ]
+	then
+		flag=0
+		break
+	elif [ $numberOfT -eq 21 ]
+	then
+		flag=1
+		break
+	elif [ $numberOfH -eq 20 ] && [ $numberOfT -eq 20 ]
+	then
+		flag=2
+		break
+	fi
+done
+if [ $flag -eq 2 ]
 then
-        ((Head++))
-else
-        ((Tail++))
-  fi
-
-
-  }
-
-for (( i=0 ;i<=40; i++ ))
-  do
-          tietosses
- while [[ $Heads -eq 20  &&  $Tails -eq 20 ]]
-                do
-                 echo "ITS a TIE GAME RESUMES AGAIN"
-                     break
-                     done
-
-                     freshgame
-        while [ $Head  -ge 21 ]
-        do
-
-        if [ $(($Head-$Tail)) -ge 2 ]
-        then
-                echo "HURRAY HEADS WINNER"
-                break
-            fi
-           done
-         while [ $Tail  -ge 21 ]
-               do
-
-             if [ $(($Tail-$Head)) -ge 2 ]
-               then
-                echo "HURRAY TAILS WINNER"
-                break
-                fi
-              done
-    done
+	functionreturn="$(freshgame)"
+	echo $functionreturn
+elif [ $flag -eq 1 ]
+then
+	echo "T win by $(($numberOfT-$numberOfH))"
+elif [ $flag -eq 0 ]
+then
+	echo "H win by $(($numberOfH-$numberOfT))"
+fi
