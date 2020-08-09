@@ -2,42 +2,58 @@
 
 Heads=0
 Tails=0
-function tosses(){
+Head=0
+Tail=0
+
+function tietosses () {
 IsChoice=$((RANDOM%2))
 if [ $IsChoice -eq 0 ]
 then
         ((Heads++))
 else
         ((Tails++))
-fi
-}
+  fi
+  }
+
+
+function freshgame () {
+IsChoice=$((RANDOM%2))
+if [ $IsChoice -eq 0 ]
+then
+        ((Head++))
+else
+        ((Tail++))
+  fi
+
+
+  }
 
 for (( i=0 ;i<=40; i++ ))
-   do
-      tosses
-           while [ $Heads  -lt 21 ]
-            do
+  do
+          tietosses
+ while [[ $Heads -eq 20  &&  $Tails -eq 20 ]]
+                do
+                 echo "ITS a TIE GAME RESUMES AGAIN"
+                     break
+                     done
 
-        if [ $(($Heads-$Tails)) -ge 2 ]
+                     freshgame
+        while [ $Head  -ge 21 ]
+        do
+
+        if [ $(($Head-$Tail)) -ge 2 ]
         then
                 echo "HURRAY HEADS WINNER"
                 break
             fi
-          done
-           while [ $Tails  -lt 21 ]
+           done
+         while [ $Tail  -ge 21 ]
                do
 
-             if [ $(($Tails-$Heads)) -ge 2 ]
+             if [ $(($Tail-$Head)) -ge 2 ]
                then
                 echo "HURRAY TAILS WINNER"
                 break
                 fi
               done
-
- if [ $Heads -eq 20 ] && [ $Tails -eq 20 ]
-                then
-                 echo "ITS a TIE"
-                break
-               fi
-
-done 
+    done
